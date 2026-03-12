@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import OpenDevSocietyBranding from "./OpenDevSocietyBranding";
+import LogoText from "@/components/LogoText";
 
 const Footer = () => {
     return (
@@ -10,13 +10,7 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="col-span-1 md:col-span-2">
                         <Link href="/" className="flex items-center gap-2 mb-4">
-                            <Image
-                                src="/assets/images/logo.png"
-                                alt="OpenStock"
-                                width={150}
-                                height={38}
-                                className="brightness-0 invert"
-                            />
+                            <LogoText className="text-2xl font-bold" />
                         </Link>
                         <p className="text-gray-400 mb-6 max-w-md">
                             OpenStock is an open-source alternative to expensive market platforms. Track real-time prices, set personalized alerts, and explore detailed company insights — built openly, for everyone, forever free.
