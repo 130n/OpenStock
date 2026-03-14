@@ -325,6 +325,121 @@ export const POPULAR_STOCK_SYMBOLS = [
     'SE',
 ];
 
+// ~1000 major US stocks (S&P 500 + large/mid-caps) for quote cache
+export const TRACKED_STOCK_SYMBOLS = [
+    // S&P 500 - Technology
+    'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'META', 'TSLA', 'AVGO', 'ORCL',
+    'CRM', 'ADBE', 'AMD', 'INTC', 'CSCO', 'QCOM', 'TXN', 'INTU', 'AMAT', 'NOW',
+    'IBM', 'MU', 'ADI', 'LRCX', 'KLAC', 'SNPS', 'CDNS', 'MCHP', 'NXPI', 'APH',
+    'MSI', 'FTNT', 'PANW', 'CRWD', 'ZS', 'DDOG', 'NET', 'SNOW', 'PLTR', 'TEAM',
+    'WDAY', 'ANSS', 'KEYS', 'MPWR', 'ON', 'SWKS', 'TER', 'FSLR', 'ENPH', 'SEDG',
+    'EPAM', 'PTC', 'CTSH', 'IT', 'AKAM', 'JNPR', 'FFIV', 'GEN', 'NTAP', 'WDC',
+    'STX', 'HPQ', 'HPE', 'DELL', 'ZBRA', 'TRMB', 'TYL', 'PAYC', 'PCTY', 'MANH',
+
+    // S&P 500 - Financials
+    'JPM', 'V', 'MA', 'BAC', 'WFC', 'GS', 'MS', 'BLK', 'SCHW', 'C',
+    'AXP', 'SPGI', 'ICE', 'CME', 'MCO', 'AON', 'MMC', 'CB', 'PGR', 'TRV',
+    'AIG', 'MET', 'PRU', 'AFL', 'ALL', 'HIG', 'GL', 'L', 'BRO', 'WRB',
+    'CINF', 'RJF', 'NTRS', 'STT', 'BK', 'CFG', 'RF', 'HBAN', 'KEY', 'FITB',
+    'MTB', 'ZION', 'CMA', 'FRC', 'SBNY', 'SIVB', 'USB', 'PNC', 'TFC', 'COF',
+    'DFS', 'SYF', 'ALLY', 'NDAQ', 'CBOE', 'MSCI', 'FDS', 'MKTX', 'VRSN', 'FIS',
+    'FISV', 'GPN', 'FLT', 'WEX', 'SQ', 'PYPL', 'COIN', 'HOOD', 'SOFI', 'AFRM',
+
+    // S&P 500 - Healthcare
+    'UNH', 'JNJ', 'LLY', 'ABBV', 'MRK', 'PFE', 'TMO', 'ABT', 'DHR', 'BMY',
+    'AMGN', 'GILD', 'ISRG', 'MDT', 'ELV', 'CI', 'HCA', 'SYK', 'BSX', 'VRTX',
+    'REGN', 'ZTS', 'BDX', 'EW', 'IDXX', 'IQV', 'MTD', 'A', 'WST', 'ALGN',
+    'DXCM', 'PODD', 'HOLX', 'TECH', 'BAX', 'RMD', 'COO', 'HSIC', 'XRAY', 'DGX',
+    'LH', 'PKI', 'CRL', 'MRNA', 'BIIB', 'ILMN', 'CTLT', 'INCY', 'SGEN', 'HZNP',
+    'VTRS', 'OGN', 'TEVA', 'ZBH', 'TFX', 'ALLE', 'STE', 'HUM', 'CNC', 'MOH',
+
+    // S&P 500 - Consumer Discretionary
+    'HD', 'MCD', 'NKE', 'LOW', 'SBUX', 'TJX', 'BKNG', 'CMG', 'ORLY', 'AZO',
+    'ROST', 'DHI', 'LEN', 'PHM', 'NVR', 'TOL', 'GPC', 'BBY', 'ULTA', 'DG',
+    'DLTR', 'KMX', 'TSCO', 'WSM', 'RH', 'ETSY', 'W', 'EBAY', 'ABNB', 'EXPE',
+    'MAR', 'HLT', 'WH', 'H', 'WYNN', 'LVS', 'MGM', 'CZR', 'NCLH', 'RCL',
+    'CCL', 'DRI', 'YUM', 'DARDEN', 'POOL', 'LKQ', 'BWA', 'APTV', 'LEA', 'RL',
+    'TPR', 'CPRI', 'HAS', 'MAT', 'GRMN', 'DECK', 'LULU', 'CROX', 'BIRK', 'ON',
+    'F', 'GM', 'RIVN', 'LCID', 'NIO', 'XPEV', 'LI', 'UBER', 'LYFT', 'DASH',
+
+    // S&P 500 - Consumer Staples
+    'PG', 'KO', 'PEP', 'COST', 'WMT', 'PM', 'MO', 'MDLZ', 'CL', 'EL',
+    'KMB', 'GIS', 'HSY', 'K', 'SJM', 'CPB', 'HRL', 'MKC', 'CAG', 'BG',
+    'ADM', 'TSN', 'KHC', 'STZ', 'BF.B', 'TAP', 'SAM', 'MNST', 'KDP', 'CLX',
+    'CHD', 'SPC', 'COTY', 'WBA', 'KR', 'SYY', 'USFD', 'PFGC', 'CHEF',
+
+    // S&P 500 - Industrials
+    'CAT', 'UNP', 'HON', 'UPS', 'RTX', 'BA', 'DE', 'LMT', 'GE', 'MMM',
+    'GD', 'NOC', 'TDG', 'ITW', 'EMR', 'ETN', 'PH', 'ROK', 'AME', 'DOV',
+    'CMI', 'PCAR', 'OTIS', 'CARR', 'SWK', 'FTV', 'GWW', 'FAST', 'WAB', 'CSX',
+    'NSC', 'FDX', 'CHRW', 'JBHT', 'XPO', 'DAL', 'LUV', 'UAL', 'AAL', 'ALK',
+    'JBLU', 'WM', 'RSG', 'VRSK', 'CPRT', 'CTAS', 'PAYX', 'ADP', 'BR', 'LDOS',
+    'BAH', 'SAIC', 'J', 'PWR', 'ACM', 'MTZ', 'EME', 'FIX', 'HWM', 'TT',
+    'IR', 'RRX', 'IEX', 'GNRC', 'PLUG', 'BLDR', 'POOL', 'SITE',
+
+    // S&P 500 - Energy
+    'XOM', 'CVX', 'COP', 'SLB', 'EOG', 'MPC', 'PSX', 'VLO', 'PXD', 'OXY',
+    'HES', 'DVN', 'FANG', 'HAL', 'BKR', 'OKE', 'WMB', 'KMI', 'ET', 'TRGP',
+    'CTRA', 'MRO', 'APA', 'EQT', 'AR', 'RRC', 'SWN', 'CHK', 'MTDR', 'PR',
+    'DINO', 'DK', 'PBF', 'CVI', 'HFC', 'PARR',
+
+    // S&P 500 - Utilities
+    'NEE', 'DUK', 'SO', 'D', 'AEP', 'SRE', 'EXC', 'XEL', 'ED', 'WEC',
+    'ES', 'AWK', 'AEE', 'CMS', 'DTE', 'FE', 'PPL', 'CNP', 'NI', 'EVRG',
+    'ATO', 'NRG', 'VST', 'CEG', 'PNW', 'OGE', 'LNT', 'AES', 'BKH', 'AVA',
+
+    // S&P 500 - Real Estate
+    'PLD', 'AMT', 'CCI', 'EQIX', 'PSA', 'DLR', 'O', 'WELL', 'SPG', 'VICI',
+    'AVB', 'EQR', 'ESS', 'MAA', 'UDR', 'CPT', 'INVH', 'SUI', 'ELS', 'PEAK',
+    'VTR', 'OHI', 'MPW', 'ARE', 'BXP', 'KIM', 'REG', 'FRT', 'HST', 'RHP',
+
+    // S&P 500 - Materials
+    'LIN', 'APD', 'SHW', 'ECL', 'FCX', 'NEM', 'NUE', 'STLD', 'VMC', 'MLM',
+    'DOW', 'DD', 'EMN', 'CE', 'PPG', 'ALB', 'FMC', 'MOS', 'CF', 'IFF',
+    'CTVA', 'BALL', 'PKG', 'IP', 'WRK', 'SEE', 'AVY', 'AMCR', 'CCK',
+
+    // S&P 500 - Communication Services
+    'NFLX', 'DIS', 'CMCSA', 'T', 'VZ', 'TMUS', 'CHTR', 'EA', 'TTWO', 'ATVI',
+    'MTCH', 'ZG', 'PINS', 'SNAP', 'RBLX', 'U', 'WBD', 'PARA', 'FOX', 'FOXA',
+    'LYV', 'IACI', 'IPG', 'OMC', 'ROKU', 'TTD', 'MGNI', 'PUBM', 'DV',
+
+    // Mid-cap Technology
+    'BILL', 'MDB', 'CFLT', 'ESTC', 'DOCN', 'GTLB', 'HCP', 'BRZE', 'CWAN', 'SPT',
+    'ASAN', 'FROG', 'DT', 'NEWR', 'SUMO', 'VRNS', 'TENB', 'QLYS', 'RPD', 'S',
+    'CYBR', 'SAIL', 'EVBG', 'ALRM', 'JAMF', 'SMAR', 'APPN', 'COUP', 'VEEV', 'DOCU',
+
+    // Mid-cap Healthcare & Biotech
+    'EXAS', 'NVCR', 'NTRA', 'GH', 'TWST', 'BEAM', 'EDIT', 'NTLA', 'CRSP', 'FATE',
+    'RCKT', 'RARE', 'BMRN', 'ALNY', 'IONS', 'SRPT', 'NBIX', 'PCVX', 'ARVN', 'KRTX',
+    'ACAD', 'SAGE', 'AXSM', 'CRNX', 'IMVT', 'RLAY', 'TGTX', 'GTHX', 'CORT', 'PTCT',
+
+    // Mid-cap Financials
+    'LPLA', 'IBKR', 'EWBC', 'WAL', 'FNB', 'PNFP', 'GBCI', 'UMBF', 'BOKF', 'OZK',
+    'SNV', 'CADE', 'HWC', 'WTFC', 'FHN', 'SSB', 'COLB', 'FFIN', 'IBTX', 'ABCB',
+
+    // Mid-cap Industrials
+    'AXON', 'TTC', 'MIDD', 'AGCO', 'CNHI', 'LFUS', 'RBC', 'AOS', 'SCI', 'TREX',
+    'AZEK', 'AAON', 'WTS', 'EAF', 'KNX', 'SAIA', 'ODFL', 'LSTR', 'HUBG', 'ARCB',
+
+    // Mid-cap Consumer
+    'FIVE', 'BOOT', 'OLLI', 'BJ', 'CASY', 'WING', 'SHAK', 'JACK', 'TXRH', 'EAT',
+    'CAKE', 'DIN', 'PLAY', 'SIX', 'FUN', 'SEAS', 'MTN', 'SKX', 'FOXF', 'BC',
+
+    // Mid-cap Energy
+    'CHRD', 'SM', 'ESTE', 'VTLE', 'NOG', 'CIVI', 'GPOR', 'LNG', 'DTM', 'AM',
+    'HESM', 'WES', 'ENLC', 'SMLP', 'PAA', 'EPD', 'MMP', 'MPLX', 'PSXP', 'CEQP',
+
+    // Additional large/mid-cap
+    'BRK.B', 'SHOP', 'SPOT', 'ZM', 'TWLO', 'OKTA', 'BABA', 'JD', 'PDD', 'SE',
+    'GRAB', 'TME', 'BILI', 'MELI', 'GLOB', 'STNE', 'PAGS', 'NU', 'XP', 'VIST',
+    'ARCO', 'CAAP', 'PAM', 'LOMA', 'SUPV', 'BMA', 'GGAL', 'CRESY', 'TEO', 'IRS',
+    'AGRO', 'IRCP', 'EDN', 'TGS', 'YPF', 'CEPU', 'BIOX', 'DESP', 'VTEX', 'CINT',
+
+    // Tech growth / recent IPOs
+    'ARM', 'CART', 'KVUE', 'KENVUE', 'CAVA', 'TOST', 'DUOL', 'CLBT', 'IONQ', 'RGTI',
+    'QUBT', 'SMCI', 'APP', 'CELH', 'HIMS', 'BROS', 'DLO', 'PAYO', 'FLYW', 'TASK',
+];
+
 export const NO_MARKET_NEWS =
     '<p class="mobile-text" style="margin:0 0 20px 0;font-size:16px;line-height:1.6;color:#4b5563;">No market news available today. Please check back tomorrow.</p>';
 

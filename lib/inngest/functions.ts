@@ -272,6 +272,68 @@ export const sendWeeklyNewsSummary = inngest.createFunction(
     }
 )
 
+export const refreshStockQuoteCache = inngest.createFunction(
+    { id: 'refresh-stock-quote-cache' },
+    { cron: '* * * * *' }, // Every minute
+    async ({ step }) => {
+        const result = await step.run('refresh-batch', async () => {
+            const { TRACKED_STOCK_SYMBOLS } = await import('@/lib/constants');
+            const { connectToDatabase } = await import('@/database/mongoose');
+            const { StockQuoteCache } = await import('@/database/models/stockQuoteCache.model');
+            const { getQuote, getCompanyProfile } = await import('@/lib/actions/finnhub.actions');
+
+            await connectToDatabase();
+
+            const batchSize = 50;
+            const totalBatches = Math.ceil(TRACKED_STOCK_SYMBOLS.length / batchSize);
+            const batchIndex = Math.floor(Date.now() / 60000) % totalBatches;
+            const batch = TRACKED_STOCK_SYMBOLS.slice(batchIndex * batchSize, (batchIndex + 1) * batchSize);
+
+            console.log(`📊 Refreshing batch ${batchIndex + 1}/${totalBatches} (${batch.length} symbols)`);
+
+            const ops = [];
+            for (const symbol of batch) {
+                try {
+                    const [quote, profile] = await Promise.all([
+                        getQuote(symbol),
+                        getCompanyProfile(symbol),
+                    ]);
+
+                    if (!quote || quote.c === 0) continue;
+
+                    ops.push({
+                        updateOne: {
+                            filter: { symbol: symbol.toUpperCase() },
+                            update: {
+                                $set: {
+                                    symbol: symbol.toUpperCase(),
+                                    name: profile?.name || symbol,
+                                    logo: profile?.logo || undefined,
+                                    price: quote.c,
+                                    change: quote.d,
+                                    changePercent: quote.dp,
+                                    lastUpdated: new Date(),
+                                },
+                            },
+                            upsert: true,
+                        },
+                    });
+                } catch (e) {
+                    console.error(`Failed to fetch ${symbol}`, e);
+                }
+            }
+
+            if (ops.length > 0) {
+                await StockQuoteCache.bulkWrite(ops);
+            }
+
+            return { batch: batchIndex, updated: ops.length, total: batch.length };
+        });
+
+        return result;
+    }
+);
+
 export const checkStockAlerts = inngest.createFunction(
     { id: 'check-stock-alerts' },
     { cron: '*/5 * * * *' }, // Run every 5 minutes

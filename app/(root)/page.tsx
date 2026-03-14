@@ -1,4 +1,6 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
+import BiggestLosers from "@/components/dashboard/BiggestLosers";
+import { getTopLosers } from "@/lib/actions/stockQuoteCache.actions";
 import {
     HEATMAP_WIDGET_CONFIG,
     MARKET_DATA_WIDGET_CONFIG,
@@ -6,8 +8,9 @@ import {
     TOP_STORIES_WIDGET_CONFIG
 } from "@/lib/constants";
 
-const Home = () => {
+const Home = async () => {
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+    const losers = await getTopLosers(5);
 
     return (
         <div className="flex min-h-screen home-wrapper">
@@ -28,6 +31,9 @@ const Home = () => {
                         config={HEATMAP_WIDGET_CONFIG}
                         height={600}
                     />
+                </div>
+                <div className="md:col-span-1 xl:col-span-1">
+                    <BiggestLosers initialData={losers} />
                 </div>
             </section>
             <section className="grid w-full gap-8 home-section">
