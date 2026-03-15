@@ -1,6 +1,8 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
 import BiggestLosers from "@/components/dashboard/BiggestLosers";
+import TipOfTheDay from "@/components/dashboard/TipOfTheDay";
 import { getTopLosers } from "@/lib/actions/stockQuoteCache.actions";
+import { getTipOfTheDay } from "@/lib/actions/tipOfTheDay.actions";
 import {
     HEATMAP_WIDGET_CONFIG,
     MARKET_DATA_WIDGET_CONFIG,
@@ -10,10 +12,13 @@ import {
 
 const Home = async () => {
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
-    const losers = await getTopLosers(5);
+    const [losers, tip] = await Promise.all([getTopLosers(5), getTipOfTheDay()]);
 
     return (
         <div className="flex min-h-screen home-wrapper">
+            <section className="w-full">
+                <TipOfTheDay initialTip={tip} />
+            </section>
             <section className="w-full">
                 <BiggestLosers initialData={losers} />
             </section>
