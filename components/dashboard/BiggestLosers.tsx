@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown } from 'lucide-react';
 import { getTopLosers } from '@/lib/actions/stockQuoteCache.actions';
@@ -25,20 +25,34 @@ const verdictColors: Record<string, string> = {
     HOLD: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
 };
 
+function getSymbolKey(stocks: StockLoser[]): string {
+    return stocks.map(s => s.symbol).sort().join(',');
+}
+
 export default function BiggestLosers({ initialData }: { initialData: StockLoser[] }) {
     const [sortBy, setSortBy] = useState<SortMode>('percent');
     const [data, setData] = useState<StockLoser[]>(initialData);
     const [verdicts, setVerdicts] = useState<Record<string, StockVerdict>>({});
+    const [verdictsLoading, setVerdictsLoading] = useState(true);
+    const lastSymbolKey = useRef<string>('');
+
+    const fetchVerdicts = useCallback(async (stocks: StockLoser[], force = false) => {
+        const key = getSymbolKey(stocks);
+        if (!force && key === lastSymbolKey.current) return;
+        lastSymbolKey.current = key;
+        setVerdictsLoading(true);
+        const v = await getStockVerdicts(stocks);
+        const map: Record<string, StockVerdict> = {};
+        for (const item of v) map[item.symbol] = item;
+        setVerdicts(map);
+        setVerdictsLoading(false);
+    }, []);
 
     const fetchData = useCallback(async () => {
         const result = await getTopLosers(5, sortBy === 'percent' ? 'changePercent' : 'change');
         setData(result);
-        // Fetch AI verdicts for the new data
-        const v = await getStockVerdicts(result);
-        const map: Record<string, StockVerdict> = {};
-        for (const item of v) map[item.symbol] = item;
-        setVerdicts(map);
-    }, [sortBy]);
+        await fetchVerdicts(result);
+    }, [sortBy, fetchVerdicts]);
 
     useEffect(() => {
         fetchData();
@@ -52,11 +66,7 @@ export default function BiggestLosers({ initialData }: { initialData: StockLoser
     // Fetch verdicts for initial data on mount
     useEffect(() => {
         if (initialData.length > 0) {
-            getStockVerdicts(initialData).then(v => {
-                const map: Record<string, StockVerdict> = {};
-                for (const item of v) map[item.symbol] = item;
-                setVerdicts(map);
-            });
+            fetchVerdicts(initialData, true);
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -128,9 +138,13 @@ export default function BiggestLosers({ initialData }: { initialData: StockLoser
                                 </div>
 
                                 <div className="flex items-center gap-3">
-                                    {v && (
+                                    {v ? (
                                         <span className={`px-2 py-0.5 text-xs font-bold rounded border ${verdictColors[v.verdict] || verdictColors.HOLD}`}>
                                             {v.verdict}
+                                        </span>
+                                    ) : (
+                                        <span className="px-2 py-0.5 text-xs font-bold rounded border border-white/10 bg-white/5 text-transparent select-none">
+                                            HOLD
                                         </span>
                                     )}
                                     <div className="text-right">
@@ -146,11 +160,19 @@ export default function BiggestLosers({ initialData }: { initialData: StockLoser
                                     </div>
                                 </div>
                             </div>
-                            {v && (
-                                <p className="mt-1.5 ml-11 text-xs text-gray-500 leading-relaxed">
-                                    {v.reasoning}
-                                </p>
-                            )}
+                            {/* Fixed-height reasoning area to prevent layout shift */}
+                            <div className="mt-1.5 ml-11 min-h-[2.5rem]">
+                                {v ? (
+                                    <p className="text-xs text-gray-500 leading-relaxed">
+                                        {v.reasoning}
+                                    </p>
+                                ) : verdictsLoading ? (
+                                    <div className="space-y-1.5">
+                                        <div className="h-3 w-3/4 rounded bg-white/5 animate-pulse" />
+                                        <div className="h-3 w-1/2 rounded bg-white/5 animate-pulse" />
+                                    </div>
+                                ) : null}
+                            </div>
                         </Link>
                     );
                 })}
