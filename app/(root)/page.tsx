@@ -14,6 +14,9 @@ const Home = async () => {
 
     return (
         <div className="flex min-h-screen home-wrapper">
+            <section className="w-full">
+                <BiggestLosers initialData={losers} />
+            </section>
             <section className="grid w-full gap-8 home-section">
                 <div className="md:col-span-1 xl:col-span-1">
                     <TradingViewWidget
@@ -31,9 +34,6 @@ const Home = async () => {
                         config={HEATMAP_WIDGET_CONFIG}
                         height={600}
                     />
-                </div>
-                <div className="md:col-span-1 xl:col-span-1">
-                    <BiggestLosers initialData={losers} />
                 </div>
             </section>
             <section className="grid w-full gap-8 home-section">
