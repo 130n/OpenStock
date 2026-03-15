@@ -97,60 +97,60 @@ export default function BiggestLosers({ initialData }: { initialData: StockLoser
                 </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
                 {data.map((stock) => {
                     const v = verdicts[stock.symbol];
                     return (
                         <Link
                             key={stock.symbol}
                             href={`/stocks/${stock.symbol}`}
-                            className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors group"
+                            className="block p-3 rounded-lg hover:bg-white/5 transition-colors group"
                         >
-                            <div className="flex items-center gap-3">
-                                {stock.logo ? (
-                                    <img
-                                        src={stock.logo}
-                                        alt={stock.name}
-                                        className="w-8 h-8 rounded-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500/30 to-orange-500/30 flex items-center justify-center text-white text-xs font-bold">
-                                        {stock.symbol.charAt(0)}
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    {stock.logo ? (
+                                        <img
+                                            src={stock.logo}
+                                            alt={stock.name}
+                                            className="w-8 h-8 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500/30 to-orange-500/30 flex items-center justify-center text-white text-xs font-bold">
+                                            {stock.symbol.charAt(0)}
+                                        </div>
+                                    )}
+                                    <div>
+                                        <p className="text-sm font-medium text-white group-hover:text-gray-200">
+                                            {stock.name}
+                                        </p>
+                                        <p className="text-xs text-gray-500">{stock.symbol}</p>
                                     </div>
-                                )}
-                                <div>
-                                    <p className="text-sm font-medium text-white group-hover:text-gray-200">
-                                        {stock.name}
-                                    </p>
-                                    <p className="text-xs text-gray-500">{stock.symbol}</p>
                                 </div>
-                            </div>
 
-                            <div className="flex items-center gap-3">
-                                {v && (
-                                    <div className="relative group/verdict">
+                                <div className="flex items-center gap-3">
+                                    {v && (
                                         <span className={`px-2 py-0.5 text-xs font-bold rounded border ${verdictColors[v.verdict] || verdictColors.HOLD}`}>
                                             {v.verdict}
                                         </span>
-                                        <div className="absolute bottom-full right-0 mb-2 w-64 p-3 rounded-lg bg-gray-900 border border-white/10 text-xs text-gray-300 opacity-0 pointer-events-none group-hover/verdict:opacity-100 group-hover/verdict:pointer-events-auto transition-opacity z-50 shadow-xl">
-                                            <p className="font-semibold text-white mb-1">AI Take</p>
-                                            <p className="leading-relaxed">{v.reasoning}</p>
-                                            <p className="mt-2 text-gray-500 text-[10px]">not financial advice</p>
+                                    )}
+                                    <div className="text-right">
+                                        <p className="text-sm text-white">{formatCurrency(stock.price)}</p>
+                                        <div className={`flex items-center justify-end gap-1 text-xs ${getChangeColorClass(stock.changePercent)}`}>
+                                            <ArrowDown className="w-3 h-3" />
+                                            <span>
+                                                {sortBy === 'percent'
+                                                    ? formatChangePercent(stock.changePercent)
+                                                    : formatCurrency(Math.abs(stock.change))}
+                                            </span>
                                         </div>
-                                    </div>
-                                )}
-                                <div className="text-right">
-                                    <p className="text-sm text-white">{formatCurrency(stock.price)}</p>
-                                    <div className={`flex items-center justify-end gap-1 text-xs ${getChangeColorClass(stock.changePercent)}`}>
-                                        <ArrowDown className="w-3 h-3" />
-                                        <span>
-                                            {sortBy === 'percent'
-                                                ? formatChangePercent(stock.changePercent)
-                                                : formatCurrency(Math.abs(stock.change))}
-                                        </span>
                                     </div>
                                 </div>
                             </div>
+                            {v && (
+                                <p className="mt-1.5 ml-11 text-xs text-gray-500 leading-relaxed">
+                                    {v.reasoning}
+                                </p>
+                            )}
                         </Link>
                     );
                 })}
